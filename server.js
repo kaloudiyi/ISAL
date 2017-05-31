@@ -19,7 +19,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/search/:query', function (req, res) {
-    console.log(req.params.query);
+    var offset = (typeof req.query.offset === 'undefined')?10:req.query.offset;
     // create the db object
     var obj = {
         query: req.params.query,
@@ -34,7 +34,7 @@ app.get('/search/:query', function (req, res) {
     });
 
     //  fire the image search
-    client.search(obj.query)
+    client.search(obj.query,{page: offset})
         .then(function (images) {
             res.status(200).json(
                 images.map(function (elt) {
